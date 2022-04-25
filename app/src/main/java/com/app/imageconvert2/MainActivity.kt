@@ -61,7 +61,9 @@ class MainActivity : AppCompatActivity() {
             if (!root.exists()){
                 root.mkdirs()
             }
-            val file = File(root,"picture.pdf")
+            val alphabet: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+            val randomString: String = List(20) { alphabet.random() }.joinToString("")
+            val file = File(root,"$randomString.pdf")
             try {
                 val fileOutputStream = FileOutputStream(file)
                 pdfDocument.writeTo(fileOutputStream)
