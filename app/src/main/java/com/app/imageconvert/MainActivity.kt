@@ -1,4 +1,4 @@
-package com.app.imageconvert2
+package com.app.imageconvert
 
 import android.app.Activity
 import android.content.Intent
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     val REQUEST_CODE = 200
     var isCamera = false
     var converterimage = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         convert.setOnClickListener {
             if (bitmap != null) {
 
-                val pdfDocument = PdfDocument()
+                var pdfDocument = PdfDocument()
                 val pageinfo = PdfDocument.PageInfo.Builder(960, 1280, 1).create()
                 val page = pdfDocument.startPage(pageinfo)
                 val canvas = page.canvas
@@ -78,16 +79,22 @@ class MainActivity : AppCompatActivity() {
 
                 val root = File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                    "My_directory"
+                    "PDF Converter"
                 )
                 if (!root.exists()) {
                     root.mkdirs()
                 }
-                val file = File(root, "picture.pdf")
+                val alphabet: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+                 val randomString: String = List(20) { alphabet.random() }.joinToString("")
+                val file = File(root, "$randomString.pdf")
                 try {
                     val fileOutputStream = FileOutputStream(file)
                     pdfDocument.writeTo(fileOutputStream)
-                    Toast.makeText(this, "Image Convert Successfully in PDF | internal mermery/Documents/my_directory", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        this,
+                        "Image Convert Successfully in PDF | internal mermery/Documents/my_directory",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -99,23 +106,24 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please Select the picture First", Toast.LENGTH_LONG).show()
             }
         }
-    }
 
-            //save bitmap image
-            val root = File(Environment.getExternalStorageDirectory(),"PDF Folder 12")
-            if (!root.exists()){
-                root.mkdirs()
-            }
-            val alphabet: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-            val randomString: String = List(20) { alphabet.random() }.joinToString("")
-            val file = File(root,"$randomString.pdf")
-            try {
-                val fileOutputStream = FileOutputStream(file)
-                pdfDocument.writeTo(fileOutputStream)
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
-            pdfDocument.close()
+//
+//        //save bitmap image
+//        val root = File(Environment.getExternalStorageDirectory(), "PDF Folder 12")
+//        if (!root.exists()) {
+//            root.mkdirs()
+//        }
+//        val alphabet: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+//        val randomString: String = List(20) { alphabet.random() }.joinToString("")
+//        val file = File(root, "$randomString.pdf")
+//        try {
+//            val fileOutputStream = FileOutputStream(file)
+//            pdfDocument.writeTo(fileOutputStream)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        pdfDocument.close()
+    }
 
     private fun askPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -156,6 +164,7 @@ class MainActivity : AppCompatActivity() {
 //            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             if (isCamera) {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
                 resultLauncher.launch(intent)
             } else {
                 val intent =
@@ -178,6 +187,7 @@ class MainActivity : AppCompatActivity() {
                         // Set the image in imageview for display
                         // Set the image in imageview for display
                         image.setImageBitmap(bitmap)
+
                     } else {
                         val selectedImageUrl = result.data?.data
                         val filepath = arrayOf(MediaStore.Images.Media.DATA)

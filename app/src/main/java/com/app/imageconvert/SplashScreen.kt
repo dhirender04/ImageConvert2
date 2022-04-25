@@ -1,4 +1,4 @@
-package com.app.imageconvert2
+package com.app.imageconvert
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

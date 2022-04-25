@@ -1,4 +1,4 @@
-package com.app.imageconvert2
+package com.app.imageconvert
 
 import org.junit.Test
 
